@@ -1,0 +1,940 @@
+{
+  "info": {
+    "_postman_id": "14e684b8-f2ae-4c5b-b098-3e7f320045fa",
+    "name": "cart",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53556824",
+    "_collection_link": "https://go.postman.co/collection/53556824-14e684b8-f2ae-4c5b-b098-3e7f320045fa?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Cart Items",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"array\",\r",
+              "  \"items\": {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "      \"id\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"userId\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"date\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"products\": {\r",
+              "        \"type\": \"array\",\r",
+              "        \"items\": {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"productId\": {\r",
+              "              \"type\": \"number\"\r",
+              "            },\r",
+              "            \"quantity\": {\r",
+              "              \"type\": \"number\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"productId\",\r",
+              "            \"quantity\"\r",
+              "          ]\r",
+              "        }\r",
+              "      },\r",
+              "      \"__v\": {\r",
+              "        \"type\": \"number\"\r",
+              "      }\r",
+              "    },\r",
+              "    \"required\": [\r",
+              "      \"id\",\r",
+              "      \"userId\",\r",
+              "      \"date\",\r",
+              "      \"products\",\r",
+              "      \"__v\"\r",
+              "    ]\r",
+              "  }\r",
+              "}\r",
+              "\r",
+              "pm.test(\"Response is an array and not empty\", function(){\r",
+              "    pm.expect(json_response).to.be.a('array').and.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/carts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "carts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Cart Item",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Cart Response Schema\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"id\": { \"type\": \"integer\" },\r",
+              "    \"userId\": { \"type\": \"integer\" },\r",
+              "    \"date\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+              "    \"products\": {\r",
+              "      \"type\": \"array\",\r",
+              "      \"minItems\": 1,\r",
+              "      \"items\": {\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "          \"productId\": { \"type\": \"integer\" },\r",
+              "          \"quantity\": { \"type\": \"integer\" }\r",
+              "        },\r",
+              "        \"required\": [\"productId\", \"quantity\"]\r",
+              "      }\r",
+              "    },\r",
+              "    \"__v\": { \"type\": \"integer\" }\r",
+              "  },\r",
+              "  \"required\": [\"id\", \"userId\", \"date\", \"products\", \"__v\"]\r",
+              "}\r",
+              " \r",
+              "pm.test(\"Response is an object and not empty\", function () {\r",
+              "    pm.expect(json_response).to.be.an(\"object\");\r",
+              "    pm.expect(Object.keys(json_response).length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected products validation\", function(){\r",
+              "    pm.expect(json_response.id).to.be.eql(parseInt(pm.collectionVariables.get(\"cart_id\")));\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/carts/{{cart_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "carts",
+            "{{cart_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Limited Cart Items",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"array\",\r",
+              "  \"items\": {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "      \"id\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"userId\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"date\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"products\": {\r",
+              "        \"type\": \"array\",\r",
+              "        \"items\": {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"productId\": {\r",
+              "              \"type\": \"number\"\r",
+              "            },\r",
+              "            \"quantity\": {\r",
+              "              \"type\": \"number\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"productId\",\r",
+              "            \"quantity\"\r",
+              "          ]\r",
+              "        }\r",
+              "      },\r",
+              "      \"__v\": {\r",
+              "        \"type\": \"number\"\r",
+              "      }\r",
+              "    },\r",
+              "    \"required\": [\r",
+              "      \"id\",\r",
+              "      \"userId\",\r",
+              "      \"date\",\r",
+              "      \"products\",\r",
+              "      \"__v\"\r",
+              "    ]\r",
+              "  }\r",
+              "}\r",
+              "pm.test(\"cart limit validation\", function(){\r",
+              "    pm.expect(json_response.length).to.be.eql(parseInt(pm.collectionVariables.get(\"limit\")))\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response is an array and not empty\", function(){\r",
+              "    pm.expect(json_response).to.be.a('array').and.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}carts?limit={{limit}}",
+          "host": [
+            "{{base_url}}carts"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "{{limit}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Sorted Cart Items",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const  expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"array\",\r",
+              "  \"items\": {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "      \"id\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"userId\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"date\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"products\": {\r",
+              "        \"type\": \"array\",\r",
+              "        \"items\": {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"productId\": {\r",
+              "              \"type\": \"number\"\r",
+              "            },\r",
+              "            \"quantity\": {\r",
+              "              \"type\": \"number\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"productId\",\r",
+              "            \"quantity\"\r",
+              "          ]\r",
+              "        }\r",
+              "      },\r",
+              "      \"__v\": {\r",
+              "        \"type\": \"number\"\r",
+              "      }\r",
+              "    },\r",
+              "    \"required\": [\r",
+              "      \"id\",\r",
+              "      \"userId\",\r",
+              "      \"date\",\r",
+              "      \"products\",\r",
+              "      \"__v\"\r",
+              "    ]\r",
+              "  }\r",
+              "}\r",
+              "//This test will check the order if asc is provided then first item should be of id 1 and if desc is provided then id should be 7\r",
+              "pm.test(\"validate returned items are in sorted order\", function () {\r",
+              "    let sorting_order = pm.collectionVariables.get(\"sort\");\r",
+              "\r",
+              "    let ids = json_response.map(item => Number(item.id));\r",
+              "    let sortedIds = [...ids].sort((a, b) => a - b);\r",
+              "\r",
+              "    if (sorting_order === 'asc') {\r",
+              "        pm.expect(ids).to.eql(sortedIds);\r",
+              "    } else {\r",
+              "        pm.expect(ids).to.eql(sortedIds.reverse());\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is an array and not empty\", function(){\r",
+              "    pm.expect(json_response).to.be.a('array').and.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Length of the returned products(7)\", function(){\r",
+              "    pm.expect(json_response.length).to.be.eql(7)\r",
+              "});\r",
+              "\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}carts?sort={{sort}}",
+          "host": [
+            "{{base_url}}carts"
+          ],
+          "query": [
+            {
+              "key": "sort",
+              "value": "{{sort}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Cart Items in Date Range",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"array\",\r",
+              "  \"items\": {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "      \"id\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"userId\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"date\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"products\": {\r",
+              "        \"type\": \"array\",\r",
+              "        \"items\": {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"productId\": {\r",
+              "              \"type\": \"number\"\r",
+              "            },\r",
+              "            \"quantity\": {\r",
+              "              \"type\": \"number\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"productId\",\r",
+              "            \"quantity\"\r",
+              "          ]\r",
+              "        }\r",
+              "      },\r",
+              "      \"__v\": {\r",
+              "        \"type\": \"number\"\r",
+              "      }\r",
+              "    },\r",
+              "    \"required\": [\r",
+              "      \"id\",\r",
+              "      \"userId\",\r",
+              "      \"date\",\r",
+              "      \"products\",\r",
+              "      \"__v\"\r",
+              "    ]\r",
+              "  }\r",
+              "}\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is an array and not empty\", function(){\r",
+              "    pm.expect(json_response).to.be.a('array').and.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}carts?startdate=2020-01-01&enddate=2020-01-30",
+          "host": [
+            "{{base_url}}carts"
+          ],
+          "query": [
+            {
+              "key": "startdate",
+              "value": "2020-01-01"
+            },
+            {
+              "key": "enddate",
+              "value": "2020-01-30"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User-Specific Cart Items",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"array\",\r",
+              "  \"items\": {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "      \"id\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"userId\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"date\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"products\": {\r",
+              "        \"type\": \"array\",\r",
+              "        \"items\": {\r",
+              "          \"type\": \"object\",\r",
+              "          \"properties\": {\r",
+              "            \"productId\": {\r",
+              "              \"type\": \"number\"\r",
+              "            },\r",
+              "            \"quantity\": {\r",
+              "              \"type\": \"number\"\r",
+              "            }\r",
+              "          },\r",
+              "          \"required\": [\r",
+              "            \"productId\",\r",
+              "            \"quantity\"\r",
+              "          ]\r",
+              "        }\r",
+              "      },\r",
+              "      \"__v\": {\r",
+              "        \"type\": \"number\"\r",
+              "      }\r",
+              "    },\r",
+              "    \"required\": [\r",
+              "      \"id\",\r",
+              "      \"userId\",\r",
+              "      \"date\",\r",
+              "      \"products\",\r",
+              "      \"__v\"\r",
+              "    ]\r",
+              "  }\r",
+              "}\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response is an array and not empty validation\", function(){\r",
+              "    pm.expect(json_response).to.be.a('array').and.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"All cart items belong to specific user\", function () {\r",
+              "    let expectedUserId = Number(pm.collectionVariables.get(\"user_id\"));\r",
+              "\r",
+              "    json_response.forEach(item => {\r",
+              "        pm.expect(item.userId).to.eql(expectedUserId);\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}carts/user/{{user_id}}",
+          "host": [
+            "{{base_url}}carts"
+          ],
+          "path": [
+            "user",
+            "{{user_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add to Cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"id\": {\r",
+              "      \"type\": \"number\"\r",
+              "    },\r",
+              "    \"userId\": {\r",
+              "      \"type\": \"number\"\r",
+              "    },\r",
+              "    \"date\": {\r",
+              "      \"type\": \"string\"\r",
+              "    },\r",
+              "    \"products\": {\r",
+              "      \"type\": \"array\",\r",
+              "      \"items\": {\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "          \"productId\": {\r",
+              "            \"type\": \"number\"\r",
+              "          },\r",
+              "          \"quantity\": {\r",
+              "            \"type\": \"number\"\r",
+              "          }\r",
+              "        },\r",
+              "        \"required\": [\r",
+              "          \"productId\",\r",
+              "          \"quantity\"\r",
+              "        ]\r",
+              "      }\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"id\",\r",
+              "    \"userId\",\r",
+              "    \"date\",\r",
+              "    \"products\"\r",
+              "  ]\r",
+              "}\r",
+              "pm.test(\"response validation\", function(){\r",
+              "    pm.expect(json_response).to.have.property(\"id\");\r",
+              "    pm.expect(json_response.id).to.be.a('number')\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response is an object and not empty validation\", function(){\r",
+              "    pm.expect(json_response).to.be.a('object').and.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected products validation\", function(){\r",
+              "    pm.expect(json_response.id).to.be.eql(11);\r",
+              "    pm.expect(json_response.userId).to.be.eql(parseInt(pm.collectionVariables.get(\"user_id\")));\r",
+              "    pm.expect(json_response.date).to.be.eql(pm.collectionVariables.get(\"date\"));\r",
+              "    // Validate product details\r",
+              "   pm.expect(json_response.products[0].productId).to.eql(parseInt(pm.collectionVariables.get(\"product_id\")));\r",
+              "   pm.expect(json_response.products[0].quantity).to.eql(parseInt(pm.collectionVariables.get(\"quantity\")));\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(201)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"userId\": {{user_id}},\r\n    \"date\": \"{{date}}\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": {{product_id}},\r\n            \"quantity\": {{quantity}}\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}carts",
+          "host": [
+            "{{base_url}}carts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"id\": {\r",
+              "      \"type\": \"number\"\r",
+              "    },\r",
+              "    \"userId\": {\r",
+              "      \"type\": \"number\"\r",
+              "    },\r",
+              "    \"date\": {\r",
+              "      \"type\": \"string\"\r",
+              "    },\r",
+              "    \"products\": {\r",
+              "      \"type\": \"array\",\r",
+              "      \"items\": {\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "          \"productId\": {\r",
+              "            \"type\": \"number\"\r",
+              "          },\r",
+              "          \"quantity\": {\r",
+              "            \"type\": \"number\"\r",
+              "          }\r",
+              "        },\r",
+              "        \"required\": [\r",
+              "          \"productId\",\r",
+              "          \"quantity\"\r",
+              "        ]\r",
+              "      }\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"id\",\r",
+              "    \"userId\",\r",
+              "    \"date\",\r",
+              "    \"products\"\r",
+              "  ]\r",
+              "}\r",
+              "\r",
+              "pm.test(\"response validation\", function(){\r",
+              "    pm.expect(json_response).to.have.property(\"id\");\r",
+              "    pm.expect(json_response.id).to.be.a('number')\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response is an object and not empty validation\", function(){\r",
+              "    pm.expect(json_response).to.be.a('object').and.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate cart details match request body\", function () {\r",
+              "\r",
+              "    // Get expected values from collection variables\r",
+              "    let expectedUserId = Number(pm.collectionVariables.get(\"user_id\"));\r",
+              "    let expectedDate = pm.collectionVariables.get(\"date\");\r",
+              "    let expectedProductId = Number(pm.collectionVariables.get(\"product_id\"));\r",
+              "    let expectedQuantity = Number(pm.collectionVariables.get(\"quantity\"));\r",
+              "\r",
+              "    // Validate userId\r",
+              "    pm.expect(json_response.userId).to.eql(expectedUserId);\r",
+              "\r",
+              "    // Validate date\r",
+              "    pm.expect(json_response.date).to.eql(expectedDate);\r",
+              "\r",
+              "    // Validate products array length\r",
+              "    pm.expect(json_response.products.length).to.eql(1);\r",
+              "\r",
+              "    // Validate product details\r",
+              "    pm.expect(json_response.products[0].productId).to.eql(expectedProductId);\r",
+              "    pm.expect(json_response.products[0].quantity).to.eql(expectedQuantity);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"userId\": {{user_id}},\r\n    \"date\": \"{{date}}\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": {{product_id}},\r\n            \"quantity\": {{quantity}}\r\n        }\r\n    ]\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}carts/{{cart_id}}",
+          "host": [
+            "{{base_url}}carts"
+          ],
+          "path": [
+            "{{cart_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Cart",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json_response = pm.response.json();\r",
+              "const expected_schema = {\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"object\",\r",
+              "  \"properties\": {\r",
+              "    \"id\": {\r",
+              "      \"type\": \"number\"\r",
+              "    },\r",
+              "    \"userId\": {\r",
+              "      \"type\": \"number\"\r",
+              "    },\r",
+              "    \"date\": {\r",
+              "      \"type\": \"string\"\r",
+              "    },\r",
+              "    \"products\": {\r",
+              "      \"type\": \"array\",\r",
+              "      \"items\": {\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "          \"productId\": {\r",
+              "            \"type\": \"number\"\r",
+              "          },\r",
+              "          \"quantity\": {\r",
+              "            \"type\": \"number\"\r",
+              "          }\r",
+              "        },\r",
+              "        \"required\": [\r",
+              "          \"productId\",\r",
+              "          \"quantity\"\r",
+              "        ]\r",
+              "      }\r",
+              "    },\r",
+              "    \"__v\": {\r",
+              "      \"type\": \"number\"\r",
+              "    }\r",
+              "  },\r",
+              "  \"required\": [\r",
+              "    \"id\",\r",
+              "    \"userId\",\r",
+              "    \"date\",\r",
+              "    \"products\",\r",
+              "    \"__v\"\r",
+              "  ]\r",
+              "}\r",
+              "pm.test(\"response validation\", function(){\r",
+              "    pm.expect(json_response).to.have.property(\"id\");\r",
+              "    pm.expect(json_response.id).to.be.a('number')\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response is an object and not empty validation\", function(){\r",
+              "    pm.expect(json_response).to.be.a('object').and.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected products validation\", function(){\r",
+              "    pm.expect(json_response.id).to.be.eql(parseInt(pm.collectionVariables.get(\"cart_id\")));\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected JSON schema validation\", function(){\r",
+              "    pm.response.to.have.jsonSchema(expected_schema);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"successful response validation\", function(){\r",
+              "    pm.response.to.have.status(200)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}carts/{{cart_id}}",
+          "host": [
+            "{{base_url}}carts"
+          ],
+          "path": [
+            "{{cart_id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "cart_id",
+      "value": ""
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "date",
+      "value": ""
+    },
+    {
+      "key": "quantity",
+      "value": ""
+    },
+    {
+      "key": "limit",
+      "value": ""
+    },
+    {
+      "key": "sort",
+      "value": ""
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    }
+  ]
+}
